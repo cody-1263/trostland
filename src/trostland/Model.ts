@@ -62,7 +62,7 @@ export class MergedUser {
 
 
 
-// - - - - - - - - - -- - - - - - - - - - - - - - - 
+// - - - - - - - - - - - - - - - - - - - - - - - - 
 
 
 
@@ -72,6 +72,41 @@ export class MergedUser {
 
 
 export class Merger {
+  
+  /** Lists of users imported from spreadsheet */
+  private spreadsheetUsers: Map<string, Array<SpreadsheetUser>>;
+  
+  /** Lists of users imported from bungie.net */
+  private bungieUsers: Map<string, Array<BungieUser>>;
+  
+  /** Lists of users imported from seismic website */
+  private seismicUsers: Map<string, Array<SeismicUser>>;
+  
+  
+  /* ------------ 0. Constructor ------------ */
+  
+  
+  constructor() {
+    
+    let clanNames = new Array<string>();
+    clanNames.push("Seismic Chaos");
+    clanNames.push("Seismic Juggernauts");
+    clanNames.push("Seismic Pathfinders");
+    
+    this.spreadsheetUsers = new Map<string, Array<SpreadsheetUser>>();
+    this.bungieUsers = new Map<string, Array<BungieUser>>();
+    this.seismicUsers = new Map<string, Array<SeismicUser>>();
+    
+    for (let clanName of clanNames) {
+      this.spreadsheetUsers.set(clanName, new Array<SpreadsheetUser>());
+      this.bungieUsers.set(clanName, new Array<BungieUser>());
+      this.seismicUsers.set(clanName, new Array<SeismicUser>());
+    }
+  }
+  
+  
+  /* ------------ 1. Users merging ------------ */
+  
   
   /** Merges three profiles of each user in one container when they match each other */
   mergeUsers(bungieUsers: Array<BungieUser>, seismicUsers: Array<SeismicUser>, spreadsheetUsers: Array<SpreadsheetUser>) {
@@ -149,35 +184,40 @@ export class Merger {
     return mergedUsers;
   }
   
-  /** Reads input tab-separated text and creates spreadsheet user objects from it */
-  readSpreadsheet(text: string) {
-    let ssUserList = new Array<SpreadsheetUser>();
-    let lines = text.split(/\r?\n/);
-    for (let i = 3; i < lines.length; i++) {
-      let line =  lines[i];
-      let segments = line.split('\t');
-      let sgName = segments[0].trim();
-      let bnName = segments[1].trim();
-      
-      if (sgName.length == 0 && bnName.length == 0)
-        continue;
-        
-      let ssUser = new SpreadsheetUser(null, null, null);
-      ssUser.seismicName = sgName;
-      ssUser.bungieName = bnName;
-      ssUser.rowNumber = i;
-      ssUserList.push(ssUser);
-    }
-    
-    return ssUserList;
+  
+  
+  
+  /* ------------ 4. Spreadsheet reading ------------ */
+  
+  
+  async loadSpreadsheetTsv(event) {
+    let fileList : FileList = event.target.files;
+		let file = fileList[0];
+		let fileText = await file.text();
+		readSpreadsheetTsv(fileText);
   }
   
-  /** Exapmple of text file reading in a browser */
-  subscribeToInputElementChange() {
-    // var fr = new FileReader();
-    // fr.onload = function(){
-    //   document.getElementById('output').textContent = fr.result;
-    // }
-    // fr.readAsText(this.files[0]);
+  /** Reads input tab-separated text and creates spreadsheet user objects from it */
+  readSpreadsheetTsv(tsvText: string) {
+		let lines = tsvText.split(/\r?\n/);
+		let items : Array<SpreadsheetUser> = null;
+		for (let i = 0; i < lines.length; i++) {
+      let line = lines[i];
+			let parts = line.split('\t');
+			let sgName = parts[0].trim();
+			let bnName = parts[1].trim();
+      
+      if (sgName.contains("Seismic ")) {
+        items = this.spreadsheetUsers[sgName];
+      }
+      else {
+        if (sgName.length == 0) sgName = null;
+        if (bnName.length == 0) bnName = null;
+        let a = new SpreadsheetUser(i, sgName, bnName);
+        items.push(a);
+      }
+		}
+    return items;
   }
+  
 }
