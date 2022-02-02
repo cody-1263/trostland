@@ -194,7 +194,7 @@ export class Merger {
     let fileList : FileList = event.target.files;
 		let file = fileList[0];
 		let fileText = await file.text();
-		readSpreadsheetTsv(fileText);
+		this.readSpreadsheetTsv(fileText);
   }
   
   /** Reads input tab-separated text and creates spreadsheet user objects from it */
@@ -207,7 +207,7 @@ export class Merger {
 			let sgName = parts[0].trim();
 			let bnName = parts[1].trim();
       
-      if (sgName.contains("Seismic ")) {
+      if (sgName.includes("Seismic ")) {
         items = this.spreadsheetUsers[sgName];
       }
       else {

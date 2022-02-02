@@ -1,6 +1,7 @@
 <script lang="ts">
 	import MergedRoster from './MergedRoster.svelte';
   import { MergedUser, SeismicUser, BungieUser, SpreadsheetUser } from './Model';
+	import { BungieNetDataSource } from './DataSources';
 	
 	let seismicUsers = new Array<SeismicUser>();
   let bungieUsers = new Array<BungieUser>();
@@ -52,6 +53,16 @@
     addSeismicUsers();
     addBungieUsers();
     mergeUsers();
+		
+		let bnds = new BungieNetDataSource();
+		bnds.getUsers().then(function (users) {
+			bungieUsers = users;
+			mergedUsers = new Array<MergedUser>();
+			for (let bu of bungieUsers) {
+				mergedUsers.push(new MergedUser(null,null, bu));
+			}
+		});
+		
   }
 </script>
 
