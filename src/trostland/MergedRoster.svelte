@@ -17,9 +17,9 @@
 		gap: 16px;
 		padding-left: 16px;
 	}
-	.bn-item:hover {
+	/* .bn-item:hover {
 		border: solid #fff4 1px;
-	}
+	} */
 	
 	.bn-subitem {
 		display: flex;

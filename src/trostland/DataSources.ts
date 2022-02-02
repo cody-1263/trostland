@@ -1,5 +1,8 @@
 import { MergedUser, SeismicUser, BungieUser, SpreadsheetUser } from './Model';
 
+/**
+ * bungie.net users data source
+ */
 export class BungieNetDataSource {
   
   constructor() {
@@ -51,4 +54,44 @@ export class BungieNetDataSource {
     }
   }
 
+}
+
+export class SpreadsheetDataSource {
+  
+  constructor() {
+    
+  }
+  
+  openFile() {
+    let inputElement = document.createElement('input');
+    inputElement.type = 'file';
+    inputElement.accept = '.txt, .tsv';
+    inputElement.onchange = this.onFileChange;
+    inputElement.click();
+  }
+  
+  async onFileChange(event) {
+		let fileList = event.target.files;
+		let file = fileList[0];
+		let data = await file.text();
+		let ssUsers = await this.readSpreadsheetTsv(data);
+	}
+	
+	async readSpreadsheetTsv(tsvText) {
+		let lines = tsvText.split('\n');
+		let items = new Array<SpreadsheetUser>();
+		for (let line of lines){
+			let parts = line.split('\t');
+			let sgName = parts[0];
+			let bnName = parts[1];
+			
+			let a = new SpreadsheetUser(0, sgName, bnName);
+			items.push(a);
+		}
+    
+    console.log(items);
+		
+		return items;
+	}
+  
 }

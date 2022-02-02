@@ -1,7 +1,7 @@
 <script lang="ts">
 	import MergedRoster from './MergedRoster.svelte';
   import { MergedUser, SeismicUser, BungieUser, SpreadsheetUser } from './Model';
-	import { BungieNetDataSource } from './DataSources';
+	import { BungieNetDataSource, SpreadsheetDataSource } from './DataSources';
 	
 	let seismicUsers = new Array<SeismicUser>();
   let bungieUsers = new Array<BungieUser>();
@@ -53,6 +53,11 @@
     addSeismicUsers();
     addBungieUsers();
     mergeUsers();
+		
+		let ssds = new SpreadsheetDataSource();
+		ssds.openFile();
+		
+		return;
 		
 		let bnds = new BungieNetDataSource();
 		bnds.getUsers().then(function (users) {
