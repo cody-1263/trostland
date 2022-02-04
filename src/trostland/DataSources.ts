@@ -56,36 +56,55 @@ export class BungieNetDataSource {
 
 }
 
+/**
+ * Spreadsheet users data source
+ */
 export class SpreadsheetDataSource {
   
-  constructor() {
+  // constructor() {
     
-  }
+  // }
   
-  openFile() {
-    let inputElement = document.createElement('input');
-    inputElement.type = 'file';
-    inputElement.accept = '.txt, .tsv';
-    inputElement.onchange = this.onFileChange;
-    inputElement.click();
-  }
+  // openFile() {
+  //   let inputElement = document.createElement('input');
+  //   inputElement.type = 'file';
+  //   inputElement.accept = '.txt, .tsv';
+  //   inputElement.onchange = this.onFileChange;
+  //   inputElement.click();
+  // }
   
+  /**
+   * Loads the file from event arguments and send it to reading
+   */
   async onFileChange(event) {
 		let fileList = event.target.files;
 		let file = fileList[0];
 		let data = await file.text();
 		let ssUsers = await this.readSpreadsheetTsv(data);
+    
+    return ssUsers;
 	}
 	
+  /**
+   * Reades tsv text into array of SpreadsheetUsers
+   */
 	async readSpreadsheetTsv(tsvText) {
+    
 		let lines = tsvText.split('\n');
 		let items = new Array<SpreadsheetUser>();
+    let rowNumber = 0;
+    
 		for (let line of lines){
+      rowNumber++;
+      
 			let parts = line.split('\t');
 			let sgName = parts[0];
 			let bnName = parts[1];
+      
+      if (sgName == 'chaos' || sgName == 'juggernauts' || sgName == 'pathfinders')
+        continue;
 			
-			let a = new SpreadsheetUser(0, sgName, bnName);
+			let a = new SpreadsheetUser(rowNumber, sgName, bnName);
 			items.push(a);
 		}
     
