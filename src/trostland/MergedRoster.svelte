@@ -69,7 +69,7 @@
 		<!-- BUNGIE info -->
 		<div class="bn-subitem">
 			{#if u.bungieUser != null}
-			<a href="https://seismicgaming.eu/profile/16750-sg-jowaaaa">
+			<a href="{u.bungieUser.url}" rel="noopener noreferrer" target="_blank">
 				<img src="https://help.bungie.net/hc/article_attachments/360094766612/shield.png" alt="" class="bn-bungie-icon">
 			</a>
 				<div>
