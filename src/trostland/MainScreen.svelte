@@ -1,39 +1,34 @@
 <script lang="ts">
 	import MergedRoster from './MergedRoster.svelte';
-  import { MergedUser, SeismicUser, BungieUser, SpreadsheetUser, Merger } from './Model';
-	import { BungieNetDataSource, SpreadsheetDataSource } from './DataSources';
+  import { MergedUser, Merger } from './Model';
 	
-	let seismicUsers = new Array<SeismicUser>();
-  let bungieUsers = new Array<BungieUser>();
-  let spreadsheetUsers = new Array<SpreadsheetUser>();
-  let mergedUsers = new Array<MergedUser>();
-	
-	/**
-	 * Processes user tsv file input
-	 * @param e
-	 */
-	function onTsvFileOpen(e) {
-		let tsvReader = new SpreadsheetDataSource();
-		tsvReader.onFileChange(e).then(function (users) {
-			spreadsheetUsers = users;
-			mergedUsers = new Array<MergedUser>();
-			for (let su of spreadsheetUsers) {
-				mergedUsers.push(new MergedUser(su,null,null));
-			}
-		});
+  let chaosUsers = new Array<MergedUser>();
+	let juggernautsUsers = new Array<MergedUser>();
+	let pathfindersUsers = new Array<MergedUser>();
+	let emptyUsers = new Array<MergedUser>();
+		
+	let mainMerger = new Merger();
+
+	/** Reloads UI arrays from the model (mainMerger) */
+	function reloadArrays() {
+		chaosUsers       = mainMerger.mergedUsers.get('chaos');
+		juggernautsUsers = mainMerger.mergedUsers.get('juggernauts');
+		pathfindersUsers = mainMerger.mergedUsers.get('pathfinders');
+		emptyUsers       = mainMerger.mergedUsers.get('empty');
 	}
 	
-	/**
-	 * Processes bungie button click and loads bungie users
-	 */
-	function onBungieLoadClick() {
-		let bnds = new BungieNetDataSource();
-		bnds.getUsers().then(function (users) {
-			bungieUsers = users;
-			let merger = new Merger();
-			let newMergedUsers = merger.mergeUsers(bungieUsers, seismicUsers, spreadsheetUsers);
-			mergedUsers = newMergedUsers;
-		});
+	/** Processes user tsv file inputv */
+	async function onTsvFileOpen(e) {
+		await mainMerger.openTsvFile(e);
+		mainMerger.mergeUsers();
+		reloadArrays();
+	}
+	
+	/** Processes bungie button click and loads bungie users */
+	async function onBungieLoadClick() {
+		await mainMerger.loadBungieUsers();
+		mainMerger.mergeUsers();
+		reloadArrays();
 	}
 	
 	
@@ -64,13 +59,13 @@
 		background: #fff0;
 	}
 	
-	.btn-item-done {
+	/* .btn-item-done {
 		display: flex;
 		align-items: center;
 		gap: 8px;
 		width: 200px;
 		background: #fff0;
-	}
+	} */
 	
 	.btn-item-action {
 		display: flex;
@@ -118,58 +113,18 @@
 			<div> Load bungie</div>
 		</button>
 		
-		<!-- <div class="btn-item-done">
-			<img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flat_tick_icon.svg/480px-Flat_tick_icon.svg.png" alt="">
-			<div> Bungie users: 467</div>
-		</div>
-		
-	  <div class="btn-item-done">
-			<img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flat_tick_icon.svg/480px-Flat_tick_icon.svg.png" alt="">
-			<div> Seismic users: 467</div>
-	  </div> -->
-		
-		
-		<!-- {#if mergedUsers.length > 0}
-			<div class="btn-item-done">
-				<img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flat_tick_icon.svg/480px-Flat_tick_icon.svg.png" alt="">
-				<div> Merged users: {mergedUsers.length}</div>
-			</div>
-		{:else}
-		  <button  class="btn-item-action" on:click={onBungieLoadClick}>
-				<img class="icon" src="https://icon-library.com/images/document-icon-png/document-icon-png-17.jpg" alt="">
-				<div> Load bungie</div>
-			</button>
-		{/if} -->
-	
-	  
-		
 	</div>
 	
 	<!-- lists -->
 	
-	<div class="title">
-		Merged users
-	</div>
-
-	<MergedRoster {mergedUsers}/>
-
-	<!-- <div class="title">
-		Bungie users
-	</div>
-
-	<BungieNetList {bungieUsers}/>
-
-	<div class="title">
-		Seismic users
-	</div>
-
-	<SeismicRosterList {seismicUsers}/>
-
-	<div class="title">
-		Spreadsheet users
-	</div>
-
-	<SpreadsheetRosterList {spreadsheetUsers}/> -->
+	<div class="title"> CHAOS </div>
+	<MergedRoster mergedUsers = {chaosUsers}/>
+	
+	<div class="title"> JUGGERNAUTS </div>
+	<MergedRoster mergedUsers = {juggernautsUsers}/>
+	
+	<div class="title"> PATHFINdERS </div>
+	<MergedRoster mergedUsers = {pathfindersUsers}/>
 
 	<div style="height: 10rem">
 

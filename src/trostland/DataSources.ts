@@ -10,9 +10,14 @@ export class BungieNetDataSource {
   }
   
   async getUsers() {
-    let allUsers = new Array<BungieUser>();
-    await this.addClanRoster(3285991, allUsers);
-    return allUsers;
+    let chaosUsers = await this.addClanRoster(3135419);
+    let juggsUsers = await this.addClanRoster(3285991);
+    let pathsUsers = await this.addClanRoster(3909446);
+    let userMap = new Map<string, BungieUser[]>();
+    userMap.set('chaos', chaosUsers);
+    userMap.set('juggernauts', juggsUsers);
+    userMap.set('pathfinders', pathsUsers);
+    return userMap;
   }
   
   
@@ -26,7 +31,8 @@ export class BungieNetDataSource {
     return reportJson;
   }
   
-  async addClanRoster(clanId : number, usersArray : Array<BungieUser>) {
+  async addClanRoster(clanId : number) {
+    let usersArray = new Array<BungieUser>();
     let chaosList = await this.bungieGet(`/GroupV2/${clanId}/Members/`);
     console.log(chaosList);
     console.log(`code: ${chaosList.ErrorCode}  |  status: ${chaosList.ErrorStatus}`)
@@ -52,6 +58,8 @@ export class BungieNetDataSource {
       let bUser = new BungieUser(basicName, bungieName, profileUrl, daysPassed);
       usersArray.push(bUser);
     }
+    
+    return usersArray;
   }
 
 }
@@ -91,8 +99,10 @@ export class SpreadsheetDataSource {
 	async readSpreadsheetTsv(tsvText) {
     
 		let lines = tsvText.split('\n');
-		let items = new Array<SpreadsheetUser>();
+		let items = new Map<string, Array<SpreadsheetUser>>();
     let rowNumber = 0;
+    
+    let currentArray = null;
     
 		for (let line of lines){
       rowNumber++;
@@ -101,11 +111,14 @@ export class SpreadsheetDataSource {
 			let sgName = parts[0];
 			let bnName = parts[1];
       
-      if (sgName == 'chaos' || sgName == 'juggernauts' || sgName == 'pathfinders')
+      if (sgName == 'chaos' || sgName == 'juggernauts' || sgName == 'pathfinders') {
+        currentArray = new Array<SpreadsheetUser>();
+        items.set(sgName, currentArray);
         continue;
-			
-			let a = new SpreadsheetUser(rowNumber, sgName, bnName);
-			items.push(a);
+      }
+        
+			let newUser = new SpreadsheetUser(rowNumber, sgName, bnName);
+			currentArray.push(newUser);
 		}
     
     console.log(items);
