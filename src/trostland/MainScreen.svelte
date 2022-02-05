@@ -8,6 +8,15 @@
 	let emptyUsers = new Array<MergedUser>();
 		
 	let mainMerger = new Merger();
+	
+	let displayChaos = true;
+	let displayJuggernauts = true;
+	let displayPathfinders = true;
+	let displayEmpty = true;
+	function switchChaosVisibility() { displayChaos = !displayChaos }
+	function switchJuggernautsVisibility() { displayJuggernauts = !displayJuggernauts }
+	function switchPathfindersVisibility() { displayPathfinders = !displayPathfinders }
+	function switchEmptyVisibility() { displayEmpty = !displayEmpty }
 
 	/** Reloads UI arrays from the model (mainMerger) */
 	function reloadArrays() {
@@ -45,8 +54,8 @@
 		font-size: 1.2 rem;
 		font-weight: bold;
 		color: #ddd;
-		margin-top: 1rem;
-		margin-bottom: 0.5rem;
+		/* margin-top: 1rem;
+		margin-bottom: 0.5rem; */
 	}
 	
 	.btn-panel {
@@ -90,6 +99,22 @@
 		width: 16px;
 		height: 16px;
 	}
+	
+	.btn-hide {
+		display: flex;
+		align-items: center;
+		justify-content: space-evenly;
+		gap: 8px;
+		width: 200px;
+		height: 40px;
+		background: #fff1;
+		padding: 0px;
+		margin: 0px;
+		color: #ddd;
+		border: solid #fff2 1px;
+		border-radius: 8px;
+		margin: 8px;
+	}
 </style>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  -->
@@ -117,14 +142,27 @@
 	
 	<!-- lists -->
 	
-	<div class="title"> CHAOS </div>
-	<MergedRoster mergedUsers = {chaosUsers}/>
 	
-	<div class="title"> JUGGERNAUTS </div>
-	<MergedRoster mergedUsers = {juggernautsUsers}/>
+	<button class="btn-hide" on:click="{switchChaosVisibility}">
+		<div class="title"> CHAOS </div>
+	</button>
+	{#if displayChaos}
+		<MergedRoster mergedUsers = {chaosUsers}/>
+	{/if}
 	
-	<div class="title"> PATHFINdERS </div>
-	<MergedRoster mergedUsers = {pathfindersUsers}/>
+	<button class="btn-hide" on:click="{switchJuggernautsVisibility}">
+		<div class="title"> JUGGERNAUTS </div>
+	</button>
+	{#if displayJuggernauts}
+		<MergedRoster mergedUsers = {juggernautsUsers}/>
+	{/if}
+	
+	<button class="btn-hide" on:click="{switchPathfindersVisibility}">
+		<div class="title"> PATHFINDERS </div>
+	</button>
+	{#if displayPathfinders}
+		<MergedRoster mergedUsers = {pathfindersUsers}/>
+	{/if}
 
 	<div style="height: 10rem">
 

@@ -6,7 +6,7 @@
 <style>
 	.bn-item {
 		height: 80px;
-    max-width: 640px;
+    max-width: 720px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -36,7 +36,7 @@
 	.bn-bungie-name {
 		color: #ddd;
 		font-size: 0.8rem;
-		width: 128px;
+		width: 200px;
 		opacity: 0.6;
 	}
 	.text-red {
