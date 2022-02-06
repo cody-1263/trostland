@@ -1,6 +1,7 @@
 
-
-### r/DTG applications
+```
+r/DTG applications
+```
 
 
 Users coming from r/DTG will sometimes apply straight on bungie.net.
