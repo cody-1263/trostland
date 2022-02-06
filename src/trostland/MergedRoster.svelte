@@ -6,8 +6,9 @@
 <style>
 	.bn-item {
 		height: 80px;
-    max-width: 720px;
-		display: flex;
+    max-width: 960px;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
 		align-items: center;
 		justify-content: space-between;
 		background: #eee1;
@@ -36,7 +37,7 @@
 	.bn-bungie-name {
 		color: #ddd;
 		font-size: 0.8rem;
-		width: 200px;
+		width: 240px;
 		opacity: 0.6;
 	}
 	.text-red {
@@ -92,12 +93,12 @@
 		
 		<div class="bn-subitem">
 			{#if u.seismicUser != null}
-				<a href="{u.seismicUser.url}">
+				<a href="{u.seismicUser.url}" rel="noopener noreferrer" target="_blank">
 					<img src="https://seismicgaming.eu/assets/images/esports/logo.png" alt="" class="bn-bungie-icon">
 				</a>
 				<div>
 					<div class="bn-account-name">{u.seismicUser.seismicName}</div>
-					<div class="bn-bungie-name"> _ </div>
+					<div class="bn-bungie-name" style="opacity: 0;"> _ </div>
 					<div class="bn-bungie-name">{u.seismicUser.lastOnlineText}</div>
 				</div>
 			{:else}
