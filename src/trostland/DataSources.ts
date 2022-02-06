@@ -5,10 +5,6 @@ import { MergedUser, SeismicUser, BungieUser, SpreadsheetUser } from './Model';
  */
 export class BungieNetDataSource {
   
-  constructor() {
-    
-  }
-  
   async getUsers() {
     let chaosUsers = await this.addClanRoster(3135419);
     let juggsUsers = await this.addClanRoster(3285991);
@@ -19,8 +15,7 @@ export class BungieNetDataSource {
     userMap.set('pathfinders', pathsUsers);
     return userMap;
   }
-  
-  
+
   async bungieGet(endpoint) {
     let bungoApiKey = '84e133a91eea4882b9a0bf6f404ef782';
     let bungoParam = { headers: {  'X-API-Key': bungoApiKey} };
@@ -69,18 +64,6 @@ export class BungieNetDataSource {
  */
 export class SpreadsheetDataSource {
   
-  // constructor() {
-    
-  // }
-  
-  // openFile() {
-  //   let inputElement = document.createElement('input');
-  //   inputElement.type = 'file';
-  //   inputElement.accept = '.txt, .tsv';
-  //   inputElement.onchange = this.onFileChange;
-  //   inputElement.click();
-  // }
-  
   /**
    * Loads the file from event arguments and send it to reading
    */
@@ -125,5 +108,47 @@ export class SpreadsheetDataSource {
 		
 		return items;
 	}
+}
+
+
+/**
+ * Seismic website data source 
+ */
+export class SeismicDataSource {
   
+  /** Loads the file from event arguments and send it to reading */
+  async onFileChange(event) {
+    let fileList = event.target.files;
+    let file = fileList[0];
+    let data = await file.text();
+    let sgUsers = this.readSeismicRosterText(data);
+    return sgUsers;
+  }
+  
+  /** Reads seismic roster html text into SeismicUsers */
+  readSeismicRosterText(data:string) {
+    
+    let parser = new DOMParser();
+    const htmlDoc = parser.parseFromString(data, "text/html");
+    let tableRows = htmlDoc.getElementsByTagName("table")[0].rows;
+    
+    let newSeismicUsers = new Array<SeismicUser>();
+    
+    for (let trElement of tableRows) {
+      
+      let nameElement = trElement.getElementsByClassName('alc-event-results-cell__player-nickname')[0];
+      let timeagoElement = trElement.getElementsByClassName('highlight')[0];
+      let linkElement = trElement.getElementsByClassName('btn-default-alt')[0];
+      
+      if (nameElement != undefined && timeagoElement != undefined && linkElement != undefined) {
+        let name = nameElement.textContent.trim();
+        let timeago = timeagoElement.textContent.trim();
+        let link = linkElement.getAttribute("href");
+        let newUser = new SeismicUser(name, link, timeago);
+        newSeismicUsers.push(newUser);
+      }
+    }
+    
+    return newSeismicUsers;
+  }
 }

@@ -6,8 +6,9 @@
 <style>
 	.bn-item {
 		height: 80px;
-    max-width: 640px;
-		display: flex;
+    max-width: 960px;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
 		align-items: center;
 		justify-content: space-between;
 		background: #eee1;
@@ -36,7 +37,7 @@
 	.bn-bungie-name {
 		color: #ddd;
 		font-size: 0.8rem;
-		width: 128px;
+		width: 240px;
 		opacity: 0.6;
 	}
 	.text-red {
@@ -69,7 +70,7 @@
 		<!-- BUNGIE info -->
 		<div class="bn-subitem">
 			{#if u.bungieUser != null}
-			<a href="https://seismicgaming.eu/profile/16750-sg-jowaaaa">
+			<a href="{u.bungieUser.url}" rel="noopener noreferrer" target="_blank">
 				<img src="https://help.bungie.net/hc/article_attachments/360094766612/shield.png" alt="" class="bn-bungie-icon">
 			</a>
 				<div>
@@ -92,19 +93,13 @@
 		
 		<div class="bn-subitem">
 			{#if u.seismicUser != null}
-				<a href="https://seismicgaming.eu/profile/16750-sg-jowaaaa">
+				<a href="{u.seismicUser.url}" rel="noopener noreferrer" target="_blank">
 					<img src="https://seismicgaming.eu/assets/images/esports/logo.png" alt="" class="bn-bungie-icon">
 				</a>
 				<div>
 					<div class="bn-account-name">{u.seismicUser.seismicName}</div>
-					<div class="bn-bungie-name"> _ </div>
-					{#if u.seismicUser.lastOnlineDaysAgo > 56}
-						<div class="bn-bungie-name text-red">{u.seismicUser.lastOnlineDaysAgo} days ago</div>
-					{:else if u.seismicUser.lastOnlineDaysAgo > 28}
-						<div class="bn-bungie-name text-yellow">{u.seismicUser.lastOnlineDaysAgo} days ago</div>
-					{:else}
-						<div class="bn-bungie-name">{u.seismicUser.lastOnlineDaysAgo} days ago</div>
-					{/if}
+					<div class="bn-bungie-name" style="opacity: 0;"> _ </div>
+					<div class="bn-bungie-name">{u.seismicUser.lastOnlineText}</div>
 				</div>
 			{:else}
 			<div style="width:162px"> </div>
