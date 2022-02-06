@@ -1,4 +1,4 @@
-import { SpreadsheetDataSource, BungieNetDataSource } from './DataSources';
+import { SpreadsheetDataSource, BungieNetDataSource, SeismicDataSource } from './DataSources';
 
 
 export class BungieUser {
@@ -25,13 +25,11 @@ export class BungieUser {
 export class SeismicUser {
   seismicName: string;
   url: string;
-  lastOnlineText: number;
-  lastOnlineDaysAgo: number;
+  lastOnlineText: string;
 
-  constructor(name: string, profileUrl: string, daysAgo: number) {
+  constructor(name: string, profileUrl: string, lastOnlineText: string) {
     this.seismicName = name;
-    this.lastOnlineDaysAgo = daysAgo;
-    this.lastOnlineText = null;
+    this.lastOnlineText = lastOnlineText;
     this.url = profileUrl;
   }
 }
@@ -83,7 +81,7 @@ export class Merger {
   private bungieUsers: Map<string, Array<BungieUser>>;
   
   /** Lists of users imported from seismic website */
-  private seismicUsers: Map<string, Array<SeismicUser>>;
+  private seismicUsers: Array<SeismicUser>;
   
   mergedUsers: Map<string, Array<MergedUser>>;
   
@@ -103,13 +101,12 @@ export class Merger {
     
     this.spreadsheetUsers = new Map<string, Array<SpreadsheetUser>>();
     this.bungieUsers      = new Map<string, Array<BungieUser>>();
-    this.seismicUsers     = new Map<string, Array<SeismicUser>>();
+    this.seismicUsers     = new Array<SeismicUser>();
     this.mergedUsers      = new Map<string, Array<MergedUser>>();
     
     for (let clanName of this.clanNames) {
       this.spreadsheetUsers.set(clanName, new Array<SpreadsheetUser>());
       this.bungieUsers.set(clanName, new Array<BungieUser>());
-      this.seismicUsers.set(clanName, new Array<SeismicUser>());
       this.mergedUsers.set(clanName, new Array<MergedUser>());
     }
   }
@@ -131,7 +128,6 @@ export class Merger {
       
       let spreadsheetClanUsers = this.spreadsheetUsers.get(clanKey);
       let bungieClanUsers = this.bungieUsers.get(clanKey);
-      let seismicClanUsers = this.seismicUsers.get(clanKey);
       
       // 1. Merge spreadsheet users
       for (let ssUser of spreadsheetClanUsers) {
@@ -140,9 +136,9 @@ export class Merger {
         mergedUser.spreadsheetUser = ssUser;
         
         // 1.1. Find matching Seismic user
-        let ssSeismicNameHash = ssUser.seismicName.toLowerCase().substring(0, hashLength);
-        for (let sgUser of seismicClanUsers) {
-          let sgNameHash = sgUser.seismicName.toLowerCase().substring(0, hashLength);
+        let ssSeismicNameHash = ssUser.seismicName.toLowerCase().replace('sg_', '').substring(0, hashLength);
+        for (let sgUser of this.seismicUsers) {
+          let sgNameHash = sgUser.seismicName.toLowerCase().replace('sg_', '').substring(0, hashLength);
           if (ssSeismicNameHash == sgNameHash) {
             mergedUser.seismicUser = sgUser;
             mergedSeismicUsers.push(sgUser);
@@ -197,6 +193,12 @@ export class Merger {
     this.bungieUsers.set('chaos', bnUsers.get('chaos'));
     this.bungieUsers.set('juggernauts', bnUsers.get('juggernauts'));
     this.bungieUsers.set('pathfinders', bnUsers.get('pathfinders'));
+  }
+  
+  async openHtmlFile(e) {
+    let sgds = new SeismicDataSource();
+    let sgUsers = await sgds.onFileChange(e);
+    this.seismicUsers = sgUsers;
   }
   
 }

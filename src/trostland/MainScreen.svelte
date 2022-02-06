@@ -33,6 +33,12 @@
 		reloadArrays();
 	}
 	
+	async function onHtmlFileOpen(e) {
+		await mainMerger.openHtmlFile(e);
+		mainMerger.mergeUsers();
+		reloadArrays();
+	}
+	
 	/** Processes bungie button click and loads bungie users */
 	async function onBungieLoadClick() {
 		await mainMerger.loadBungieUsers();
@@ -125,18 +131,26 @@
 	
 	<div class="btn-panel">
 		
-		<input class="inputfile" name="file" id="file" type="file" accept=".txt, .tsv" on:change={onTsvFileOpen} style="opacity: 0; width: 0;">
+		<input class="inputfile" name="file" id="file" type="file" accept=".tsv" on:change={onTsvFileOpen} style="opacity: 0; width: 0;">
 		<label for="file">
 			<div  class="btn-item-action" >
-				<img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flat_tick_icon.svg/480px-Flat_tick_icon.svg.png" alt="">
+				<img class="icon" src="./fileicon.png" alt="">
 				<div>OPEN FILE</div>
 			</div>
 		</label>
 		
 		<button  class="btn-item-action" on:click={onBungieLoadClick}>
-			<img class="icon" src="https://icon-library.com/images/document-icon-png/document-icon-png-17.jpg" alt="">
+			<img class="icon" src="./fileicon.png" alt="">
 			<div> Load bungie</div>
 		</button>
+		
+		<input class="inputfile" name="htmlFile" id="htmlFile" type="file" accept=".html" on:change={onHtmlFileOpen} style="opacity: 0; width: 0;">
+		<label for="htmlFile">
+			<div  class="btn-item-action" >
+				<img class="icon" src="./htmlicon.png" alt="">
+				<div>OPEN HTML</div>
+			</div>
+		</label>
 		
 	</div>
 	

@@ -92,19 +92,13 @@
 		
 		<div class="bn-subitem">
 			{#if u.seismicUser != null}
-				<a href="https://seismicgaming.eu/profile/16750-sg-jowaaaa">
+				<a href="{u.seismicUser.url}">
 					<img src="https://seismicgaming.eu/assets/images/esports/logo.png" alt="" class="bn-bungie-icon">
 				</a>
 				<div>
 					<div class="bn-account-name">{u.seismicUser.seismicName}</div>
 					<div class="bn-bungie-name"> _ </div>
-					{#if u.seismicUser.lastOnlineDaysAgo > 56}
-						<div class="bn-bungie-name text-red">{u.seismicUser.lastOnlineDaysAgo} days ago</div>
-					{:else if u.seismicUser.lastOnlineDaysAgo > 28}
-						<div class="bn-bungie-name text-yellow">{u.seismicUser.lastOnlineDaysAgo} days ago</div>
-					{:else}
-						<div class="bn-bungie-name">{u.seismicUser.lastOnlineDaysAgo} days ago</div>
-					{/if}
+					<div class="bn-bungie-name">{u.seismicUser.lastOnlineText}</div>
 				</div>
 			{:else}
 			<div style="width:162px"> </div>
