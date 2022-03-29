@@ -5,7 +5,7 @@
 
 <style>
 	.bn-item {
-		height: 80px;
+		height: 64px;
     max-width: 960px;
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
@@ -13,14 +13,15 @@
 		justify-content: space-between;
 		background: #eee1;
 		border: solid 1px;
-		margin: 12px;
+		margin: 8px;
 		border-radius: 8px;
 		gap: 16px;
 		padding-left: 16px;
 	}
-	/* .bn-item:hover {
-		border: solid #fff4 1px;
-	} */
+	.bn-item:hover {
+		border: solid #eee2 1px;
+		background: #eeeeee18;
+	}
 	
 	.bn-subitem {
 		display: flex;

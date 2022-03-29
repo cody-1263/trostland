@@ -37,10 +37,21 @@ export class BungieNetDataSource {
     console.log(items);
 
     for (const item of items) {
-
-      let basicName = item.bungieNetUserInfo.displayName;
-      let bungieName = item.bungieNetUserInfo.supplementalDisplayName;
-      let bungieId = item.destinyUserInfo.membershipId;
+      //console.log(item);
+      
+      let basicName = "[REDACTED]";
+      let bungieName = "[REDACTED]";
+      let bungieId = "[REDACTED]";
+      
+      if (item.bungieNetUserInfo != undefined) {
+        basicName = item.bungieNetUserInfo.displayName;
+        bungieName = item.bungieNetUserInfo.supplementalDisplayName;
+        bungieId = item.destinyUserInfo.membershipId;
+      }
+      else if (item.destinyUserInfo) {
+        
+      }
+      
       let lastOnline = new Date(item.lastOnlineStatusChange * 1000);
       
       let currentDate = new Date();
