@@ -42,7 +42,7 @@ export class BungieNetDataSource {
       let basicName = "[REDACTED]";
       let bungieName = "[REDACTED]";
       let bungieId = "[REDACTED]";
-      
+       
       if (item.bungieNetUserInfo != undefined) {
         basicName = item.bungieNetUserInfo.displayName;
         bungieName = item.bungieNetUserInfo.supplementalDisplayName;

@@ -118,11 +118,15 @@ export class Merger {
   /** Merges three profiles of each user in one container when they match each other */
   mergeUsers() {
     
-    let hashLength = 6;
+    let hashLength = 5;
     
     let mergedSeismicUsers = new Array<SeismicUser>();
     
     for (let clanKey of this.clanNames){
+      
+      if (clanKey == "empty")
+        continue;
+      
       let mergedClanUsers = new Array<MergedUser>();
       let mergedBungieClanUsers = new Array<BungieUser>();
       
@@ -162,9 +166,10 @@ export class Merger {
       
       // 2. Find unmatched bungie users and create MergedUsers for them
       let unmatchedBungieUsers = new Array<BungieUser>();
-      for (let bnUser of bungieClanUsers)
+      for (let bnUser of bungieClanUsers) {
         if (mergedBungieClanUsers.includes(bnUser, 0) == false)
           unmatchedBungieUsers.push(bnUser);
+      }
       
       for (let bnUser of unmatchedBungieUsers) {
         let mergedUser = new MergedUser(null, null, null);
@@ -175,6 +180,32 @@ export class Merger {
       // 3. Insert created MergedUsers in the dictionary
       this.mergedUsers.set(clanKey, mergedClanUsers);
     }
+    
+    this.fillEmptyClanUsers();
+  }
+  
+  /** Find unmatched Seismic users and create MergedUsers for them in 'empty' clan */
+  fillEmptyClanUsers() {
+    
+    // 1. Find all matched seismic users
+    let matchedSeismicUsers = new Set<SeismicUser>();
+    for (let clanUsers  of this.mergedUsers.values()) {
+      for (let clanUser of clanUsers) {
+        if (clanUser.seismicUser != null)
+          matchedSeismicUsers.add(clanUser.seismicUser);
+      }
+    }
+    
+    // 2. Find unmatched users and create MergedUser objects for them
+    let mergedEmptyClanUsers = new Array<MergedUser>();
+    for (let sgUser of this.seismicUsers) {
+      if (matchedSeismicUsers.has(sgUser))
+        continue;
+        
+      let mergedUser = new MergedUser(null, sgUser, null);
+      mergedEmptyClanUsers.push(mergedUser);
+    }
+    this.mergedUsers.set('empty', mergedEmptyClanUsers);
   }
   
   /* ------------ 4. Spreadsheet reading ------------ */

@@ -177,6 +177,13 @@
 	{#if displayPathfinders}
 		<MergedRoster mergedUsers = {pathfindersUsers}/>
 	{/if}
+	
+	<button class="btn-hide" on:click="{switchEmptyVisibility}">
+		<div class="title"> noclan </div>
+	</button>
+	{#if displayEmpty}
+		<MergedRoster mergedUsers = {emptyUsers}/>
+	{/if}
 
 	<div style="height: 10rem">
 
