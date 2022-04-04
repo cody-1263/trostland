@@ -90,7 +90,7 @@ export class SpreadsheetDataSource {
   /**
    * Reades tsv text into array of SpreadsheetUsers
    */
-	async readSpreadsheetTsv(tsvText) {
+	async readSpreadsheetTsv(tsvText : string) {
     
 		let lines = tsvText.split('\n');
 		let items = new Map<string, Array<SpreadsheetUser>>();
@@ -102,12 +102,18 @@ export class SpreadsheetDataSource {
       rowNumber++;
       
 			let parts = line.split('\t');
-			let sgName = parts[0];
-			let bnName = parts[1];
+			let sgName = parts[0].trim();
+			let bnName = parts[1].trim();
       
-      if (sgName == 'chaos' || sgName == 'juggernauts' || sgName == 'pathfinders') {
+      console.log(`${rowNumber} : ${sgName} : ${bnName}`);
+      
+      if (sgName.length == 0 && bnName.length == 0) {
+        continue;
+      }
+        
+      if (sgName == 'Chaos' || sgName == 'Juggernauts' || sgName == 'Pathfinders') {
         currentArray = new Array<SpreadsheetUser>();
-        items.set(sgName, currentArray);
+        items.set(sgName.toLowerCase(), currentArray);
         continue;
       }
         
