@@ -49,7 +49,11 @@ export class BungieNetDataSource {
         bungieId = item.destinyUserInfo.membershipId;
       }
       else if (item.destinyUserInfo) {
-        
+        let name = item.destinyUserInfo.bungieGlobalDisplayName;
+        let code = item.destinyUserInfo.bungieGlobalDisplayNameCode;
+        basicName = name;
+        bungieName = name + code;
+        bungieId = item.destinyUserInfo.membershipId;
       }
       
       let lastOnline = new Date(item.lastOnlineStatusChange * 1000);
