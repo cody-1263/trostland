@@ -52,7 +52,7 @@ export class BungieNetDataSource {
         let name = item.destinyUserInfo.bungieGlobalDisplayName;
         let code = item.destinyUserInfo.bungieGlobalDisplayNameCode;
         basicName = name;
-        bungieName = name + code;
+        bungieName = name + '#' + code;
         bungieId = item.destinyUserInfo.membershipId;
       }
       
@@ -160,12 +160,22 @@ export class SeismicDataSource {
       let nameElement = trElement.getElementsByClassName('alc-event-results-cell__player-nickname')[0];
       let timeagoElement = trElement.getElementsByClassName('highlight')[0];
       let linkElement = trElement.getElementsByClassName('btn-default-alt')[0];
+      let imageElement = trElement.getElementsByClassName('lazy')[0];
       
       if (nameElement != undefined && timeagoElement != undefined && linkElement != undefined) {
         let name = nameElement.textContent.trim();
         let timeago = timeagoElement.textContent.trim();
         let link = linkElement.getAttribute("href");
+        let imageUrl = imageElement.getAttribute("data-src");
         let newUser = new SeismicUser(name, link, timeago);
+        newUser.imageUrl = imageUrl;
+        newUser.lastOnlineStatus = 'okay';
+        if (timeago.includes('month'))
+          newUser.lastOnlineStatus = 'danger';
+          if (timeago.includes('Never'))
+          newUser.lastOnlineStatus = 'danger';
+        if (timeago.includes('3 weeks'))
+          newUser.lastOnlineStatus = 'warning';
         newSeismicUsers.push(newUser);
       }
     }

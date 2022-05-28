@@ -26,6 +26,8 @@ export class SeismicUser {
   seismicName: string;
   url: string;
   lastOnlineText: string;
+  imageUrl: string;
+  lastOnlineStatus: string;
 
   constructor(name: string, profileUrl: string, lastOnlineText: string) {
     this.seismicName = name;

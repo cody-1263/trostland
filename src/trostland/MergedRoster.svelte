@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { MergedUser } from './Model';
+  import type { MergedUser, SeismicUser } from './Model';
 	export let mergedUsers: Array<MergedUser>;
 </script>
 
@@ -31,6 +31,11 @@
 	.bn-bungie-icon {
 		height: 18px;
 		width: 18px;
+	}
+	.bn-bungie-avatar {
+		height: 40px;
+		width: 40px;
+		border-radius: 8px;
 	}
 	.bn-account-name {
 		color: #ddd;
@@ -94,13 +99,20 @@
 		
 		<div class="bn-subitem">
 			{#if u.seismicUser != null}
+				<img src="{u.seismicUser.imageUrl}" class="bn-bungie-avatar" alt="avatar">
 				<a href="{u.seismicUser.url}" rel="noopener noreferrer" target="_blank">
 					<img src="https://seismicgaming.eu/assets/images/esports/logo.png" alt="" class="bn-bungie-icon">
 				</a>
 				<div>
 					<div class="bn-account-name">{u.seismicUser.seismicName}</div>
 					<div class="bn-bungie-name" style="opacity: 0;"> _ </div>
-					<div class="bn-bungie-name">{u.seismicUser.lastOnlineText}</div>
+					{#if u.seismicUser.lastOnlineStatus == 'warning'}
+						<div class="bn-bungie-name text-yellow">{u.seismicUser.lastOnlineText}</div>
+					{:else if u.seismicUser.lastOnlineStatus == 'danger'}
+						<div class="bn-bungie-name text-red">{u.seismicUser.lastOnlineText}</div>
+					{:else}
+						<div class="bn-bungie-name">{u.seismicUser.lastOnlineText}</div>
+					{/if}
 				</div>
 			{:else}
 			<div style="width:162px"> </div>
