@@ -6,11 +6,11 @@ import { MergedUser, SeismicUser, BungieUser, SpreadsheetUser } from './Model';
 export class BungieNetDataSource {
   
   async getUsers() {
-    let chaosUsers = await this.addClanRoster(3135419);
+    //let chaosUsers = await this.addClanRoster(3135419);
     let juggsUsers = await this.addClanRoster(3285991);
     let pathsUsers = await this.addClanRoster(3909446);
     let userMap = new Map<string, BungieUser[]>();
-    userMap.set('chaos', chaosUsers);
+    //userMap.set('chaos', chaosUsers);
     userMap.set('juggernauts', juggsUsers);
     userMap.set('pathfinders', pathsUsers);
     return userMap;

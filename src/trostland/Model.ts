@@ -223,7 +223,7 @@ export class Merger {
   async loadBungieUsers() {
     let bungieDataSource = new BungieNetDataSource();
     let bnUsers = await bungieDataSource.getUsers();
-    this.bungieUsers.set('chaos', bnUsers.get('chaos'));
+    //this.bungieUsers.set('chaos', bnUsers.get('chaos'));
     this.bungieUsers.set('juggernauts', bnUsers.get('juggernauts'));
     this.bungieUsers.set('pathfinders', bnUsers.get('pathfinders'));
   }
