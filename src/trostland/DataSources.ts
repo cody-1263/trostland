@@ -105,6 +105,10 @@ export class SpreadsheetDataSource {
 		for (let line of lines){
       rowNumber++;
       
+      if (line.trim().length == 0) {
+        continue;
+      }
+      
 			let parts = line.split('\t');
 			let sgName = parts[0].trim();
 			let bnName = parts[1].trim();

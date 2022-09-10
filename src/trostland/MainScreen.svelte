@@ -157,12 +157,12 @@
 	<!-- lists -->
 	
 	
-	<button class="btn-hide" on:click="{switchChaosVisibility}">
+	<!-- <button class="btn-hide" on:click="{switchChaosVisibility}">
 		<div class="title"> CHAOS </div>
 	</button>
 	{#if displayChaos}
 		<MergedRoster mergedUsers = {chaosUsers}/>
-	{/if}
+	{/if} -->
 	
 	<button class="btn-hide" on:click="{switchJuggernautsVisibility}">
 		<div class="title"> JUGGERNAUTS </div>

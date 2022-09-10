@@ -215,7 +215,7 @@ export class Merger {
   async openTsvFile(e) {
     let tsvDataSource = new SpreadsheetDataSource();
     let tsvUsers = await tsvDataSource.onFileChange(e);
-    this.spreadsheetUsers.set('chaos', tsvUsers.get('chaos'));
+    //this.spreadsheetUsers.set('chaos', tsvUsers.get('chaos'));
     this.spreadsheetUsers.set('juggernauts', tsvUsers.get('juggernauts'));
     this.spreadsheetUsers.set('pathfinders', tsvUsers.get('pathfinders'));
   }
