@@ -169,7 +169,7 @@
 	<!-- help -->
 	
 	<div style="height: 1rem;"></div>
-	<a href="https://cdn.discordapp.com/attachments/478295827962658826/1056264087119614042/image.png" target="_blank" style="margin-left: 4rem;">How to use the tool</a>
+	<a href="https://cdn.discordapp.com/attachments/618887191661117460/1056329849574269018/Frame_1.png" target="_blank" style="margin-left: 4rem;">How to use the tool</a>
 	
 	<!-- buttons -->
 	
@@ -201,7 +201,7 @@
 					<div class="btn-description">Upload seismic website roster</div>
 				</div>
 			</label>
-			<input class="inputfile" name="htmlFile" id="htmlFile" type="file" accept=".html" on:change={onHtmlFileOpen} style="opacity: 0; width: 0;">
+			<input class="inputfile" name="htmlFile" id="htmlFile" type="file" accept=".html, .htm" on:change={onHtmlFileOpen} style="opacity: 0; width: 0;">
 		</div>
 		
 		
