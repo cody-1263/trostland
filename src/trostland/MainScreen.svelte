@@ -50,6 +50,30 @@
 </script>
 
 <style>
+	
+	input {
+		padding: 0;
+		margin: 0;
+		align-items: left;
+		height: 0;
+		width: 0;
+		opacity: 0;
+	}
+	
+	button {
+		padding: 0;
+		margin: 0;
+	}
+	
+	label {
+		padding: 0;
+		margin: 0;
+	}
+	
+	a {
+		color: #5cb1bf;
+	}
+	
 	.root-div {
 		background: #222;
 		margin: -24px -8px;
@@ -60,51 +84,67 @@
 		font-size: 1.2 rem;
 		font-weight: bold;
 		color: #ddd;
-		/* margin-top: 1rem;
-		margin-bottom: 0.5rem; */
 	}
 	
 	.btn-panel {
-		height: 72px;
+		height: 6rem;
 		display: flex;
 		align-items: center;
-		justify-content: space-around;
+		justify-content: flex-start;
+		gap: 1rem;
 		color: #ddd;
 		margin: 0px 32px;
 		background: #fff0;
 	}
 	
-	/* .btn-item-done {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		width: 200px;
-		background: #fff0;
-	} */
-	
 	.btn-item-action {
-		display: flex;
-		align-items: center;
-		justify-content: space-evenly;
-		gap: 8px;
-		width: 200px;
-		height: 32px;
+		display: grid;
+		grid-template-columns: 3rem 1fr;
+		grid-template-rows: 1fr 1fr;
+		margin: 0;
+		width: 16rem;
+		height: 4rem;
 		background: #fff1;
-		padding: 0px;
-		margin: 0px;
 		color: #ddd;
 		border: solid #fff2 1px;
 		border-radius: 8px;
 	}
-	.btn-item-action:active{
+	.btn-item-action:hover{
 		border: solid #fff4 1px;
 		background: #fff2;
 	}
-	
-	.icon {
-		width: 16px;
-		height: 16px;
+	.btn-item-action:active{
+		border: solid #fff8 1px;
+		background: #fff4;
 	}
+	
+	.btn-icon {
+		width: 32px;
+		height: 32px;
+		margin: auto;
+		grid-row: 1 / span 2;
+		grid-column: 1;
+	}
+	.btn-caption {
+		grid-row: 1;
+		grid-column: 2;
+		font-size: 1rem;
+		margin-top: auto;
+		margin-bottom: 0;
+		margin-left: 0;
+		margin-right: auto;
+	}
+	.btn-description {
+		grid-row: 2;
+		grid-column: 2;
+		font-size: 0.8rem;
+		opacity: 0.5;
+		margin-top: 0;
+		margin-bottom: auto;
+		margin-left: 0;
+		margin-right: auto;
+	}
+	
 	
 	.btn-hide {
 		display: flex;
@@ -119,7 +159,6 @@
 		color: #ddd;
 		border: solid #fff2 1px;
 		border-radius: 8px;
-		margin: 8px;
 	}
 </style>
 
@@ -127,42 +166,53 @@
 
 <div class="root-div">
 	
+	<!-- help -->
+	
+	<div style="height: 1rem;"></div>
+	<a href="https://cdn.discordapp.com/attachments/478295827962658826/1056264087119614042/image.png" target="_blank" style="margin-left: 4rem;">How to use the tool</a>
+	
 	<!-- buttons -->
 	
 	<div class="btn-panel">
 		
-		<input class="inputfile" name="file" id="file" type="file" accept=".tsv" on:change={onTsvFileOpen} style="opacity: 0; width: 0;">
-		<label for="file">
-			<div  class="btn-item-action" >
-				<img class="icon" src="./fileicon.png" alt="">
-				<div>OPEN FILE</div>
-			</div>
-		</label>
+		<div style="height: 4rem;">
+			<label for="file">
+				<div  class="btn-item-action" >
+					<img class="btn-icon" src="./img/google-sheets-48.png" alt="">
+					<div class="btn-caption">1. Open .tsv</div>
+					<div class="btn-description">Upload spreadsheet info</div>
+				</div>
+			</label>
+			<input class="inputfile" name="file" id="file" type="file" accept=".tsv" on:change={onTsvFileOpen}>
+		</div>
+		
 		
 		<button  class="btn-item-action" on:click={onBungieLoadClick}>
-			<img class="icon" src="./fileicon.png" alt="">
-			<div> Load bungie</div>
+			<img class="btn-icon" src="./img/destiny-2-96.png" alt="">
+			<div class="btn-caption">2. Load bungie.net</div>
+			<div class="btn-description">Download bungie.net rosters</div>
 		</button>
 		
-		<input class="inputfile" name="htmlFile" id="htmlFile" type="file" accept=".html" on:change={onHtmlFileOpen} style="opacity: 0; width: 0;">
-		<label for="htmlFile">
-			<div  class="btn-item-action" >
-				<img class="icon" src="./htmlicon.png" alt="">
-				<div>OPEN HTML</div>
-			</div>
-		</label>
+		<div style="height: 4rem;">
+			<label for="htmlFile">
+				<div  class="btn-item-action" >
+					<img class="btn-icon" src="./img/seismic-logo-240.png" alt="">
+					<div class="btn-caption">3. Open .html</div>
+					<div class="btn-description">Upload seismic website roster</div>
+				</div>
+			</label>
+			<input class="inputfile" name="htmlFile" id="htmlFile" type="file" accept=".html" on:change={onHtmlFileOpen} style="opacity: 0; width: 0;">
+		</div>
+		
 		
 	</div>
 	
+	
+	<div style="height: 2rem;"></div>
+	
+	
+	
 	<!-- lists -->
-	
-	
-	<!-- <button class="btn-hide" on:click="{switchChaosVisibility}">
-		<div class="title"> CHAOS </div>
-	</button>
-	{#if displayChaos}
-		<MergedRoster mergedUsers = {chaosUsers}/>
-	{/if} -->
 	
 	<button class="btn-hide" on:click="{switchJuggernautsVisibility}">
 		<div class="title"> JUGGERNAUTS </div>
