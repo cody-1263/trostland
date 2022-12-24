@@ -142,9 +142,9 @@ export class Merger {
         mergedUser.spreadsheetUser = ssUser;
         
         // 1.1. Find matching Seismic user
-        let ssSeismicNameHash = ssUser.seismicName.toLowerCase().replace('sg_', '').substring(0, hashLength);
+        let ssSeismicNameHash = ssUser.seismicName;
         for (let sgUser of this.seismicUsers) {
-          let sgNameHash = sgUser.seismicName.toLowerCase().replace('sg_', '').substring(0, hashLength);
+          let sgNameHash = sgUser.seismicName;
           if (ssSeismicNameHash == sgNameHash) {
             mergedUser.seismicUser = sgUser;
             mergedSeismicUsers.push(sgUser);
@@ -153,9 +153,9 @@ export class Merger {
         }
         
         // 1.2. Find matching Bungie user
-        let ssBungieNameHash = ssUser.bungieName.toLowerCase().substring(0, hashLength);
+        let ssBungieNameHash = ssUser.bungieName;
         for (let bnUser of bungieClanUsers) {
-          let bnNameHash = bnUser.bungieName.toLowerCase().substring(0, hashLength);
+          let bnNameHash = bnUser.bungieName;
           if (ssBungieNameHash == bnNameHash) {
             mergedUser.bungieUser = bnUser;
             mergedBungieClanUsers.push(bnUser);
@@ -215,7 +215,6 @@ export class Merger {
   async openTsvFile(e) {
     let tsvDataSource = new SpreadsheetDataSource();
     let tsvUsers = await tsvDataSource.onFileChange(e);
-    //this.spreadsheetUsers.set('chaos', tsvUsers.get('chaos'));
     this.spreadsheetUsers.set('juggernauts', tsvUsers.get('juggernauts'));
     this.spreadsheetUsers.set('pathfinders', tsvUsers.get('pathfinders'));
   }
@@ -223,7 +222,6 @@ export class Merger {
   async loadBungieUsers() {
     let bungieDataSource = new BungieNetDataSource();
     let bnUsers = await bungieDataSource.getUsers();
-    //this.bungieUsers.set('chaos', bnUsers.get('chaos'));
     this.bungieUsers.set('juggernauts', bnUsers.get('juggernauts'));
     this.bungieUsers.set('pathfinders', bnUsers.get('pathfinders'));
   }
